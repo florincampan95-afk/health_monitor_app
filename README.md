@@ -137,7 +137,7 @@ Aplicația este pregătită pentru integrare cu Groq AI:
 5. **Grafice profesionale** - Vizualizare date medicale
 6. **Export pentru medici** - Rapoarte PDF complete
 
-## Licență
+## Disertatie
 
 Acest proiect este dezvoltat pentru scopuri educaționale (licență).
 
