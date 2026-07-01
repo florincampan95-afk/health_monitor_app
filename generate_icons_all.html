@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate All App Icons</title>
+  <style>
+    body { font-family: system-ui; background: #1a1a2e; color: white; padding: 40px; text-align: center; }
+    .icons { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin: 30px 0; }
+    .icon-box { background: #252540; padding: 20px; border-radius: 16px; }
+    .icon-box h3 { margin-bottom: 15px; color: #3b82f6; }
+    canvas { border: 2px solid #333; margin: 10px; }
+    .main-icon { border-radius: 22%; }
+    .fg-icon { background: repeating-conic-gradient(#333 0% 25%, #444 0% 50%) 50% / 20px 20px; }
+    button { padding: 15px 30px; font-size: 18px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+    button:hover { background: #2563eb; }
+    .success { background: #10b981; }
+    .info { color: #888; margin: 20px 0; max-width: 600px; margin-left: auto; margin-right: auto; }
+    code { background: #333; padding: 4px 8px; border-radius: 4px; }
+    .steps { text-align: left; background: #252540; padding: 20px; border-radius: 12px; max-width: 600px; margin: 30px auto; }
+    .steps ol { padding-left: 20px; line-height: 2; }
+  </style>
+</head>
+<body>
+  <h1>🏥 Monitor Sănătate - Icon Generator</h1>
+  <p class="info">Generate both icons needed for flutter_launcher_icons</p>
+  
+  <div class="icons">
+    <div class="icon-box">
+      <h3>Main Icon (1024x1024)</h3>
+      <canvas id="mainIcon" class="main-icon" width="512" height="512"></canvas>
+      <br>
+      <button onclick="downloadMain()">📥 Download app_icon.png</button>
+    </div>
+    
+    <div class="icon-box">
+      <h3>Foreground (Adaptive)</h3>
+      <canvas id="fgIcon" class="fg-icon" width="512" height="512"></canvas>
+      <br>
+      <button onclick="downloadFg()">📥 Download app_icon_foreground.png</button>
+    </div>
+  </div>
+  
+  <button class="success" onclick="downloadBoth()">📦 Download Both Icons</button>
+  
+  <div class="steps">
+    <h3>📋 Steps to apply icons:</h3>
+    <ol>
+      <li>Download both icons above</li>
+      <li>Place them in <code>assets/icon/</code> folder</li>
+      <li>Run: <code>/home/andrei/flutter/bin/flutter pub get</code></li>
+      <li>Run: <code>/home/andrei/flutter/bin/flutter pub run flutter_launcher_icons</code></li>
+      <li>Rebuild the app!</li>
+    </ol>
+  </div>
+
+  <script>
+    // Draw main icon with background
+    function drawMainIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = size;
+      canvas.height = size;
+      
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#1e40af');
+      gradient.addColorStop(1, '#3b82f6');
+      
+      const radius = size * 0.22;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, radius);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      const scale = size / 140;
+      ctx.save();
+      ctx.scale(scale, scale);
+      
+      // Hexagon
+      ctx.beginPath();
+      ctx.moveTo(70, 28);
+      ctx.lineTo(105, 48);
+      ctx.lineTo(105, 92);
+      ctx.lineTo(70, 112);
+      ctx.lineTo(35, 92);
+      ctx.lineTo(35, 48);
+      ctx.closePath();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 5;
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      
+      // Cross vertical
+      ctx.beginPath();
+      ctx.roundRect(62, 45, 16, 50, 4);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      
+      // Cross horizontal
+      ctx.beginPath();
+      ctx.roundRect(45, 62, 50, 16, 4);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      
+      ctx.restore();
+    }
+    
+    // Draw foreground only (for adaptive icons)
+    function drawForegroundIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = size;
+      canvas.height = size;
+      
+      // Transparent background
+      ctx.clearRect(0, 0, size, size);
+      
+      const scale = size / 140;
+      ctx.save();
+      ctx.scale(scale, scale);
+      
+      // Hexagon - white with slight shadow
+      ctx.shadowColor = 'rgba(0,0,0,0.3)';
+      ctx.shadowBlur = 4;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+      
+      ctx.beginPath();
+      ctx.moveTo(70, 28);
+      ctx.lineTo(105, 48);
+      ctx.lineTo(105, 92);
+      ctx.lineTo(70, 112);
+      ctx.lineTo(35, 92);
+      ctx.lineTo(35, 48);
+      ctx.closePath();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 5;
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      
+      // Cross vertical
+      ctx.beginPath();
+      ctx.roundRect(62, 45, 16, 50, 4);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      
+      // Cross horizontal
+      ctx.beginPath();
+      ctx.roundRect(45, 62, 50, 16, 4);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      
+      ctx.restore();
+    }
+    
+    // Initialize canvases
+    const mainCanvas = document.getElementById('mainIcon');
+    const fgCanvas = document.getElementById('fgIcon');
+    
+    drawMainIcon(mainCanvas, 512);
+    drawForegroundIcon(fgCanvas, 512);
+    
+    function downloadMain() {
+      // Create high-res version
+      const hires = document.createElement('canvas');
+      drawMainIcon(hires, 1024);
+      
+      const link = document.createElement('a');
+      link.download = 'app_icon.png';
+      link.href = hires.toDataURL('image/png');
+      link.click();
+    }
+    
+    function downloadFg() {
+      const hires = document.createElement('canvas');
+      drawForegroundIcon(hires, 1024);
+      
+      const link = document.createElement('a');
+      link.download = 'app_icon_foreground.png';
+      link.href = hires.toDataURL('image/png');
+      link.click();
+    }
+    
+    function downloadBoth() {
+      downloadMain();
+      setTimeout(downloadFg, 500);
+    }
+  </script>
+</body>
+</html>
