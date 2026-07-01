@@ -128,7 +128,7 @@ Aplicația este pregătită pentru integrare cu Groq AI:
   - Detectare pattern-uri anormale
   - Sugestii pentru îmbunătățirea aderenței la tratament
 
-## Avantaje pentru Licență
+## Avantaje pentru disertatie
 
 1. **Impact medical real** - Ajută pacienții să își monitorizeze sănătatea
 2. **Aderență la tratament** - Reminder-uri pentru medicație
@@ -139,7 +139,7 @@ Aplicația este pregătită pentru integrare cu Groq AI:
 
 ## Disertatie
 
-Acest proiect este dezvoltat pentru scopuri educaționale (licență).
+Acest proiect este dezvoltat pentru scopuri educaționale (disertatie).
 
 ## Contact
 
